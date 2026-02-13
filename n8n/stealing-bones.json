@@ -1,0 +1,1728 @@
+{
+  "nodes": [
+    {
+      "parameters": {
+        "content": "## SHORT STEAL",
+        "height": 176,
+        "width": 2448
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -928,
+        496
+      ],
+      "typeVersion": 1,
+      "id": "2bbdb0cc-4c13-4b4a-b336-3f98ea3b0c9a",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {}
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.3,
+      "position": [
+        -736,
+        528
+      ],
+      "id": "213f6942-69cd-4d16-be01-b6f0195c50d0",
+      "name": "EXCAVATION"
+    },
+    {
+      "parameters": {
+        "modelName": "models/gemini-3-pro-preview",
+        "options": {
+          "temperature": 0
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        528,
+        384
+      ],
+      "id": "6c4981f1-ab24-480f-bc81-16d08e5df70d",
+      "name": "Gemini Pro",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "UK1bL5ajwTYECZ7Z",
+          "name": "Msoans Access"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "fieldToSplitOut": "output.scenes",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitOut",
+      "typeVersion": 1,
+      "position": [
+        976,
+        528
+      ],
+      "id": "d0f41960-2307-4ece-bd36-9186db66f582",
+      "name": "Split Out Scenes"
+    },
+    {
+      "parameters": {
+        "operation": "search",
+        "base": {
+          "__rl": true,
+          "value": "app0ttB5I3om40Qhz",
+          "mode": "list",
+          "cachedResultName": "stealing-bones",
+          "cachedResultUrl": "https://airtable.com/app0ttB5I3om40Qhz"
+        },
+        "table": {
+          "__rl": true,
+          "value": "tblUT9FAM9xipRsyb",
+          "mode": "list",
+          "cachedResultName": "project",
+          "cachedResultUrl": "https://airtable.com/app0ttB5I3om40Qhz/tblUT9FAM9xipRsyb"
+        },
+        "filterByFormula": "({status} = 'Todo')",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.airtable",
+      "typeVersion": 2.1,
+      "position": [
+        -400,
+        528
+      ],
+      "id": "74a2700a-f1e1-4d80-88a3-55989bd869e4",
+      "name": "Search Project",
+      "credentials": {
+        "airtableTokenApi": {
+          "id": "ZseG7AfA1qcyn9JX",
+          "name": "Airtable Video Generation API Key"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=**Analyze the following link and output the JSON now:**: {{ $json.yt_short }}",
+        "hasOutputParser": true,
+        "options": {
+          "systemMessage": "**Role:** You are a Creative Director and Storyboard Artist. Your task is to transform a YouTube video into a clear, narrative \"Animation Script.\"\n\n**Objective:** Deconstruct the video into its main successive scenes. For each scene, focus on the visual narrative and the transition from the start to the end of the shot.\n\n**Analytical Directives:**\n1. **Scenario Flow:** Break the video into logical story beats (Scenes), not second-by-second timestamps.\n2. **The Script:** Provide the core \"Action\" and \"Dialogue/VO\" for each beat.\n3. **Keyframe Prompts:** For every scene, generate a \"Start Image Prompt\" and an \"End Image Prompt.\" These should be descriptive enough for an AI image generator (like Midjourney or DALL-E) to maintain visual consistency.\n4. **Asset Context:** Briefly mention what characters or props are active in that scene.\n\n**Output Rule:** Respond ONLY with a valid JSON object. No conversational filler.\n\n---\n\n**Task:** Analyze the following YouTube link. Group the content into its main successive scenes and provide the visual script and keyframe prompts.\n\n**Few-Shot Example:**\n{{\n\u00a0\u00a0\"project_title\":\"10G Gravity Adaptation\",\n\u00a0\u00a0\"global_style_guideline\":\"Hyper-realistic medical 3D, cinematic lighting, forest background.\",\n\u00a0\u00a0\"overall_script\":\"The video explores human evolution under extreme gravity. It begins with the catastrophic failure of standard human anatomy (shattering bones and organ collapse) and transitions into a series of morphological adaptations: shrinking in height, thickening limbs into columns, losing the neck for stability, and expanding the heart to pump heavy blood. It concludes with the reveal of the 'Heavy Worlder,' a compact, indestructible cube of flesh.\",\n\u00a0\u00a0\"scenes\":[\n\u00a0\u00a0\u00a0{\n\u00a0\u00a0\u00a0\u00a0\u00a0\"scene_number\":1,\n\u00a0\u00a0\u00a0\u00a0\u00a0\"description\":\"Anatomical Failure.\",\n\u00a0\u00a0\u00a0\u00a0\u00a0\"script_action\":\"A glass-skinned human stands in a forest; gravity spikes, causing the femurs to shatter instantly.\",\n\u00a0\u00a0\u00a0\u00a0\u00a0\"audio_vo\":\"Your own bones would shatter like toothpicks.\",\n\u00a0\u00a0\u00a0\u00a0\u00a0\"assets_involved\":[\n\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\"Glass Human Model\",\n\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\"Skeleton\",\n\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\"Forest\"\n\u00a0\u00a0\u00a0\u00a0\u00a0],\n\u00a0\u00a0\u00a0\u00a0\u00a0\"start_image_prompt\":\"A transparent glass-skinned human standing upright in a photorealistic forest, internal skeleton visible, soft cinematic sunlight, 8k.\",\n\u00a0\u00a0\u00a0\u00a0\u00a0\"end_image_prompt\":\"Extreme close up of glass-skinned legs buckling, internal white femur bones shattering into sharp shards, glowing red fracture lines.\"\n\u00a0\u00a0\u00a0}\n\u00a0\u00a0],\n\u00a0\u00a0\"loop_strategy\":\"Seamless cut from the final 'Flesh Cube' character back to the initial 'Skeleton' to reset the evolutionary cycle.\"\n}"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        576,
+        528
+      ],
+      "id": "56897f1c-a79c-44df-8f63-42dd01eec86a",
+      "name": "Extraction Agent"
+    },
+    {
+      "parameters": {
+        "content": "## IMAGES",
+        "height": 336,
+        "width": 2448,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -928,
+        736
+      ],
+      "typeVersion": 1,
+      "id": "1fbefa73-b704-4d30-bf90-bdc8006ab724",
+      "name": "Sticky Note2"
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {}
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.3,
+      "position": [
+        -736,
+        848
+      ],
+      "id": "e5c002cf-6001-413a-863a-a97d0acb25ac",
+      "name": "IMAGES"
+    },
+    {
+      "parameters": {
+        "schemaType": "manual",
+        "inputSchema": "{\n  \"type\": \"object\",\n  \"properties\": {\n    \"project_title\": {\n      \"type\": \"string\"\n    },\n    \"global_style_guideline\": {\n      \"type\": \"string\"\n    },\n    \"overall_script\": {\n      \"type\": \"string\"\n    },\n    \"scenes\": {\n      \"type\": \"array\",\n      \"items\": {\n        \"type\": \"object\",\n        \"properties\": {\n          \"scene_number\": {\n            \"type\": \"integer\"\n          },\n          \"description\": {\n            \"type\": \"string\"\n          },\n          \"script_action\": {\n            \"type\": \"string\"\n          },\n          \"audio_vo\": {\n            \"type\": \"string\"\n          },\n          \"assets_involved\": {\n            \"type\": \"array\",\n            \"items\": {\n              \"type\": \"string\"\n            }\n          },\n          \"start_image_prompt\": {\n            \"type\": \"string\"\n          },\n          \"end_image_prompt\": {\n            \"type\": \"string\"\n          }\n        },\n        \"required\": [\n          \"scene_number\",\n          \"description\",\n          \"script_action\",\n          \"audio_vo\",\n          \"assets_involved\",\n          \"start_image_prompt\",\n          \"end_image_prompt\"\n        ]\n      }\n    },\n    \"loop_strategy\": {\n      \"type\": \"string\"\n    }\n  },\n  \"required\": [\n    \"project_title\",\n    \"global_style_guideline\",\n    \"overall_script\",\n    \"scenes\",\n    \"loop_strategy\"\n  ]\n}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.3,
+      "position": [
+        768,
+        384
+      ],
+      "id": "fb9d0c36-2c83-44e7-ab07-0e21c06fe499",
+      "name": "JSON"
+    },
+    {
+      "parameters": {
+        "resource": "video",
+        "operation": "analyze",
+        "modelId": {
+          "__rl": true,
+          "value": "models/gemini-pro-latest",
+          "mode": "list",
+          "cachedResultName": "models/gemini-pro-latest"
+        },
+        "text": "**Role:** You are a Creative Director and Storyboard Artist. Your task is to transform a YouTube video into a clear, narrative \"Animation Script.\"\n\n**Objective:** Deconstruct the video into its main successive scenes. For each scene, focus on the visual narrative and the transition from the start to the end of the shot.\n\n**Analytical Directives:**\n1. **Scenario Flow:** Break the video into logical story beats (Scenes), not second-by-second timestamps.\n2. **The Script:** Provide the core \"Action\" and \"Dialogue/VO\" for each beat.\n3. **Keyframe Prompts:** For every scene, generate a \"Start Image Prompt\" and an \"End Image Prompt.\" These should be descriptive enough for an AI image generator (like Midjourney or DALL-E) to maintain visual consistency.\n4. **Asset Context:** Briefly mention what characters or props are active in that scene.\n\n**Video Analysis Protocol:** \nTo ensure the highest accuracy, follow this 4-step internal monologue:\n\n1. **Structural Mapping:** Scan the entire video duration to identify \"Visual Inflection Points\"\u2014moments where the camera angle, character state, or environment changes significantly. Use these to define your `scenes`.\n\n2. **Asset Deconstruction:** In each scene, perform a \"Layer Audit.\" Identify:\n * **Static Layers** (Backgrounds/Environments).\n * **Dynamic Layers** (Characters/Rigged Props).\n * **VFX Layers** (Particulates, lighting shifts, or UI overlays).\n\n3. **Kinetic Analysis:** Analyze the physics of the movement. Determine the \"Velocity Profile\" (e.g., Is the motion snappy and cartoony, or heavy and physics-based?). Note specifically how the `start_image` evolves into the `end_image`.\n\n4. **Audio-Visual Sync:** Correlate audio peaks (SFX or VO emphasis) with visual keyframes to ensure the `script_action` aligns perfectly with the `audio_vo` timestamps.\n\n---\n\nWe will want to output the video analysis in such format:\n\n**Few-Shot Example:**\n{{\n\u00a0\u00a0\"project_title\":\"10G Gravity Adaptation\",\n\u00a0\u00a0\"global_style_guideline\":\"Hyper-realistic medical 3D, cinematic lighting, forest background.\",\n\u00a0\u00a0\"overall_script\":\"The video explores human evolution under extreme gravity. It begins with the catastrophic failure of standard human anatomy (shattering bones and organ collapse) and transitions into a series of morphological adaptations: shrinking in height, thickening limbs into columns, losing the neck for stability, and expanding the heart to pump heavy blood. It concludes with the reveal of the 'Heavy Worlder,' a compact, indestructible cube of flesh.\",\n\u00a0\u00a0\"scenes\":[\n\u00a0\u00a0\u00a0{\n\u00a0\u00a0\u00a0\u00a0\u00a0\"scene_number\":1,\n\u00a0\u00a0\u00a0\u00a0\u00a0\"description\":\"Anatomical Failure.\",\n\u00a0\u00a0\u00a0\u00a0\u00a0\"script_action\":\"A glass-skinned human stands in a forest; gravity spikes, causing the femurs to shatter instantly.\",\n\u00a0\u00a0\u00a0\u00a0\u00a0\"audio_vo\":\"Your own bones would shatter like toothpicks.\",\n\u00a0\u00a0\u00a0\u00a0\u00a0\"assets_involved\":[\n\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\"Glass Human Model\",\n\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\"Skeleton\",\n\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\"Forest\"\n\u00a0\u00a0\u00a0\u00a0\u00a0],\n\u00a0\u00a0\u00a0\u00a0\u00a0\"start_image_prompt\":\"A transparent glass-skinned human standing upright in a photorealistic forest, internal skeleton visible, soft cinematic sunlight, 8k.\",\n\u00a0\u00a0\u00a0\u00a0\u00a0\"end_image_prompt\":\"Extreme close up of glass-skinned legs buckling, internal white femur bones shattering into sharp shards, glowing red fracture lines.\"\n\u00a0\u00a0\u00a0}\n\u00a0\u00a0],\n\u00a0\u00a0\"loop_strategy\":\"Seamless cut from the final 'Flesh Cube' character back to the initial 'Skeleton' to reset the evolutionary cycle.\"\n}",
+        "videoUrls": "={{ $json.yt_short }}",
+        "simplify": false,
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.googleGeminiTool",
+      "typeVersion": 1.1,
+      "position": [
+        672,
+        368
+      ],
+      "id": "2d3962e7-0ffd-44ba-b4a6-703c7dffea1a",
+      "name": "Analyze video",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "UK1bL5ajwTYECZ7Z",
+          "name": "Msoans Access"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "inputDataFieldName": "={{ $('POST end image').item.binary.data }}",
+        "name": "={{ $('Airtable - Scenes').item.json.project_name + \" - Scene \" + $('Airtable - Scenes').item.json.scene_number + \" - End Frame - \" + $now.toFormat('yyyy-MM-dd_HH-mm-ss') + \".png\" }}",
+        "driveId": {
+          "__rl": true,
+          "mode": "list",
+          "value": "My Drive"
+        },
+        "folderId": {
+          "__rl": true,
+          "value": "={{ $('Search files and folders').item.json.id }}",
+          "mode": "id"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        1056,
+        848
+      ],
+      "id": "f48a6ea8-b2b5-4d02-9c0d-53462c32dc17",
+      "name": "Upload end frame",
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "0VXQ0KPxq6lYgsAO",
+          "name": "Navire de l'Est"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "inputDataFieldName": "={{ $('POST start image').item.binary.data }}",
+        "name": "={{ $('Airtable - Scenes').item.json.project_name + \" - Scene \" + $('Airtable - Scenes').item.json.scene_number + \" - Start Frame - \" + $now.toFormat('yyyy-MM-dd_HH-mm-ss') + \".png\" }}",
+        "driveId": {
+          "__rl": true,
+          "mode": "list",
+          "value": "My Drive"
+        },
+        "folderId": {
+          "__rl": true,
+          "value": "={{ $('Search files and folders').item.json.id }}",
+          "mode": "id"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        720,
+        848
+      ],
+      "id": "d596768a-f165-4c65-aa46-86e584a0f6e6",
+      "name": "Upload start frame",
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "13mI63UCZN05L4Bw",
+          "name": "Msoans.ai access"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "679a0849-7020-4552-bad3-e4255a8531a6",
+              "leftValue": "={{ $('Airtable - Project').item.json.scenes_folder_created }}",
+              "rightValue": "Not Created",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        -160,
+        848
+      ],
+      "id": "359fe715-44f9-48f1-a46b-eb1eeca7f45c",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "operation": "search",
+        "base": {
+          "__rl": true,
+          "value": "app0ttB5I3om40Qhz",
+          "mode": "list",
+          "cachedResultName": "stealing-bones",
+          "cachedResultUrl": "https://airtable.com/app0ttB5I3om40Qhz"
+        },
+        "table": {
+          "__rl": true,
+          "value": "tblUT9FAM9xipRsyb",
+          "mode": "list",
+          "cachedResultName": "project",
+          "cachedResultUrl": "https://airtable.com/app0ttB5I3om40Qhz/tblUT9FAM9xipRsyb"
+        },
+        "filterByFormula": "({status} = 'In progress')",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.airtable",
+      "typeVersion": 2.1,
+      "position": [
+        -480,
+        848
+      ],
+      "id": "48bf29d0-5022-4292-b725-f1ad3b7dd63a",
+      "name": "Airtable - Project",
+      "credentials": {
+        "airtableTokenApi": {
+          "id": "ZseG7AfA1qcyn9JX",
+          "name": "Airtable Video Generation API Key"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "search",
+        "base": {
+          "__rl": true,
+          "value": "app0ttB5I3om40Qhz",
+          "mode": "list",
+          "cachedResultName": "stealing-bones",
+          "cachedResultUrl": "https://airtable.com/app0ttB5I3om40Qhz"
+        },
+        "table": {
+          "__rl": true,
+          "value": "tbl9haZzGQry8j55H",
+          "mode": "list",
+          "cachedResultName": "scenes",
+          "cachedResultUrl": "https://airtable.com/app0ttB5I3om40Qhz/tbl9haZzGQry8j55H"
+        },
+        "filterByFormula": "({status} = 'Toreview')",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.airtable",
+      "typeVersion": 2.1,
+      "position": [
+        -320,
+        848
+      ],
+      "id": "7b04aaf8-ce2c-42eb-b389-ead72239c2f3",
+      "name": "Airtable - Scenes",
+      "credentials": {
+        "airtableTokenApi": {
+          "id": "ZseG7AfA1qcyn9JX",
+          "name": "Airtable Video Generation API Key"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "folder",
+        "name": "={{ $('Airtable - Project').item.json.project_name }}",
+        "driveId": {
+          "__rl": true,
+          "mode": "list",
+          "value": "My Drive"
+        },
+        "folderId": {
+          "__rl": true,
+          "value": "1xVUgCkTu1NDKvkedVTzIyQcefFvXdl2Z",
+          "mode": "list",
+          "cachedResultName": "Scenes Images",
+          "cachedResultUrl": "https://drive.google.com/drive/folders/1xVUgCkTu1NDKvkedVTzIyQcefFvXdl2Z"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        48,
+        752
+      ],
+      "id": "d6460a79-3163-4e9c-9538-c11918dc2c5a",
+      "name": "Create folder",
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "0VXQ0KPxq6lYgsAO",
+          "name": "Navire de l'Est"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "base": {
+          "__rl": true,
+          "value": "app0ttB5I3om40Qhz",
+          "mode": "list",
+          "cachedResultName": "stealing-bones",
+          "cachedResultUrl": "https://airtable.com/app0ttB5I3om40Qhz"
+        },
+        "table": {
+          "__rl": true,
+          "value": "tblUT9FAM9xipRsyb",
+          "mode": "list",
+          "cachedResultName": "project",
+          "cachedResultUrl": "https://airtable.com/app0ttB5I3om40Qhz/tblUT9FAM9xipRsyb"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "id": "={{ $('Airtable - Project').item.json.id }}",
+            "scenes_folder_created": "Created"
+          },
+          "matchingColumns": [
+            "id"
+          ],
+          "schema": [
+            {
+              "id": "id",
+              "displayName": "id",
+              "required": false,
+              "defaultMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": true,
+              "removed": false
+            },
+            {
+              "id": "project_name",
+              "displayName": "project_name",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "yt_short",
+              "displayName": "yt_short",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "status",
+              "displayName": "status",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "options",
+              "options": [
+                {
+                  "name": "Todo",
+                  "value": "Todo"
+                },
+                {
+                  "name": "In progress",
+                  "value": "In progress"
+                },
+                {
+                  "name": "Done",
+                  "value": "Done"
+                },
+                {
+                  "name": "To Review",
+                  "value": "To Review"
+                }
+              ],
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "core_image",
+              "displayName": "core_image",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "array",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "core_elements",
+              "displayName": "core_elements",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "array",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "scenes_folder_created",
+              "displayName": "scenes_folder_created",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "options",
+              "options": [
+                {
+                  "name": "Not Created",
+                  "value": "Not Created"
+                },
+                {
+                  "name": "Created",
+                  "value": "Created"
+                }
+              ],
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "creative_direction",
+              "displayName": "creative_direction",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "script",
+              "displayName": "script",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "voice_id",
+              "displayName": "voice_id",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "music_file",
+              "displayName": "music_file",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "array",
+              "readOnly": false,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.airtable",
+      "typeVersion": 2.1,
+      "position": [
+        192,
+        752
+      ],
+      "id": "55c12e7d-b7a9-4970-99ec-ed306c971673",
+      "name": "Update record",
+      "credentials": {
+        "airtableTokenApi": {
+          "id": "ZseG7AfA1qcyn9JX",
+          "name": "Airtable Video Generation API Key"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "fileFolder",
+        "queryString": "={{ $('Airtable - Project').item.json.project_name }}",
+        "returnAll": true,
+        "filter": {
+          "driveId": {
+            "mode": "list",
+            "value": "My Drive"
+          },
+          "folderId": {
+            "__rl": true,
+            "value": "1xVUgCkTu1NDKvkedVTzIyQcefFvXdl2Z",
+            "mode": "list",
+            "cachedResultName": "Scenes Images",
+            "cachedResultUrl": "https://drive.google.com/drive/folders/1xVUgCkTu1NDKvkedVTzIyQcefFvXdl2Z"
+          }
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        384,
+        864
+      ],
+      "id": "5573bce5-797f-4fbd-8997-b8c1f36296e1",
+      "name": "Search files and folders",
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "0VXQ0KPxq6lYgsAO",
+          "name": "Navire de l'Est"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://naviredelest--image-generator-generate-image.modal.run/",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"assets\": \"{{ $('Airtable - Scenes').item.json.assets }}\",\n  \"creative_direction\": \"{{ $('Airtable - Project').item.json.creative_direction }}\",\n  \"image_prompt\": \"{{ $('Airtable - Scenes').item.json.end_image_prompt }}\",\n  \"script\": \"{{ $('Airtable - Project').item.json.script }}\",\n  \"script_action\": \"{{ $('Airtable - Scenes').item.json.script_action }}\",\n  \"reference_images\": [\n    { \"url\": \"{{ $('Airtable - Project').item.json.core_image[0].url }}\", \"label\": \"core_image\" },\n    { \"url\": \"{{ $('Airtable - Project').item.json.core_elements[0].url }}\", \"label\": \"core_elements\" }\n  ],\n  \"frame_type\": \"end\",\n  \"start_frame_url\": \"{{ $('Upload start frame').item.json.webContentLink }}\"\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        896,
+        848
+      ],
+      "id": "a11265d8-95a2-4e75-9547-1873c74b07f4",
+      "name": "POST end image",
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "Q0MHV0GVKDSqvcwE",
+          "name": "Modal"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://naviredelest--image-generator-generate-image.modal.run/",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"assets\": \"{{ $('Airtable - Scenes').item.json.assets }}\",\n  \"creative_direction\": \"{{ $('Airtable - Project').item.json.creative_direction }}\",\n  \"image_prompt\": \"{{ $('Airtable - Scenes').item.json.start_image_prompt }}\",\n  \"script\": \"{{ $('Airtable - Project').item.json.script }}\",\n  \"script_action\": \"{{ $('Airtable - Scenes').item.json.script_action }}\",\n  \"reference_images\": [\n    { \"url\": \"{{ $('Airtable - Project').item.json.core_image[0].url }}\", \"label\": \"core_image\" },\n    { \"url\": \"{{ $('Airtable - Project').item.json.core_elements[0].url }}\", \"label\": \"core_elements\" }\n  ]\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        560,
+        848
+      ],
+      "id": "fa704c96-2498-4ed9-9c11-fec224e21139",
+      "name": "POST start image",
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "Q0MHV0GVKDSqvcwE",
+          "name": "Modal"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "base": {
+          "__rl": true,
+          "value": "app0ttB5I3om40Qhz",
+          "mode": "list",
+          "cachedResultName": "stealing-bones",
+          "cachedResultUrl": "https://airtable.com/app0ttB5I3om40Qhz"
+        },
+        "table": {
+          "__rl": true,
+          "value": "tblUT9FAM9xipRsyb",
+          "mode": "list",
+          "cachedResultName": "project",
+          "cachedResultUrl": "https://airtable.com/app0ttB5I3om40Qhz/tblUT9FAM9xipRsyb"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "id": "={{ $('Search Project').item.json.id }}",
+            "project_name": "={{ $('Extraction Agent').item.json.output.project_title }}",
+            "yt_short": "={{ $('Search Project').item.json.yt_short }}",
+            "status": "To Review",
+            "creative_direction": "={{ $('Extraction Agent').item.json.output.global_style_guideline }}",
+            "script": "={{ $('Extraction Agent').item.json.output.overall_script }}"
+          },
+          "matchingColumns": [
+            "id",
+            "yt_short"
+          ],
+          "schema": [
+            {
+              "id": "id",
+              "displayName": "id",
+              "required": false,
+              "defaultMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": true,
+              "removed": false
+            },
+            {
+              "id": "project_name",
+              "displayName": "project_name",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "yt_short",
+              "displayName": "yt_short",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "status",
+              "displayName": "status",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "options",
+              "options": [
+                {
+                  "name": "Todo",
+                  "value": "Todo"
+                },
+                {
+                  "name": "In progress",
+                  "value": "In progress"
+                },
+                {
+                  "name": "Done",
+                  "value": "Done"
+                },
+                {
+                  "name": "To Review",
+                  "value": "To Review"
+                }
+              ],
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "core_image",
+              "displayName": "core_image",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "array",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "core_elements",
+              "displayName": "core_elements",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "array",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "creative_direction",
+              "displayName": "creative_direction",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "script",
+              "displayName": "script",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "voice_id",
+              "displayName": "voice_id",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "music_file",
+              "displayName": "music_file",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "array",
+              "readOnly": false,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.airtable",
+      "typeVersion": 2.1,
+      "position": [
+        1216,
+        528
+      ],
+      "id": "3ccefde5-c7a4-4aaf-bb0c-57dda9266b8b",
+      "name": "Update Project",
+      "credentials": {
+        "airtableTokenApi": {
+          "id": "ZseG7AfA1qcyn9JX",
+          "name": "Airtable Video Generation API Key"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "upsert",
+        "base": {
+          "__rl": true,
+          "value": "app0ttB5I3om40Qhz",
+          "mode": "list",
+          "cachedResultName": "stealing-bones",
+          "cachedResultUrl": "https://airtable.com/app0ttB5I3om40Qhz"
+        },
+        "table": {
+          "__rl": true,
+          "value": "tbl9haZzGQry8j55H",
+          "mode": "list",
+          "cachedResultName": "scenes",
+          "cachedResultUrl": "https://airtable.com/app0ttB5I3om40Qhz/tbl9haZzGQry8j55H"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "project_id": "={{ $('Search Project').item.json.id }}-{{$('Split Out Scenes').item.json.scene_number}}",
+            "project_name": "={{ $('Extraction Agent').item.json.output.project_title }}",
+            "Status": "Toreview",
+            "description": "={{ $('Split Out Scenes').item.json.description }}",
+            "scene_number": "={{ $('Split Out Scenes').item.json.scene_number }}",
+            "script_action": "={{ $('Split Out Scenes').item.json.script_action }}",
+            "audio_vo": "={{ $('Split Out Scenes').item.json.audio_vo }}",
+            "assets": "={{ $('Split Out Scenes').item.json.assets_involved.join(', ') }}",
+            "start_image_prompt": "={{ $('Split Out Scenes').item.json.start_image_prompt }}",
+            "end_image_prompt": "={{ $('Split Out Scenes').item.json.end_image_prompt }}"
+          },
+          "matchingColumns": [
+            "project_id"
+          ],
+          "schema": [
+            {
+              "id": "id",
+              "displayName": "id",
+              "required": false,
+              "defaultMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": true,
+              "removed": true
+            },
+            {
+              "id": "project_id",
+              "displayName": "project_id",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "project_name",
+              "displayName": "project_name",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "scene_number",
+              "displayName": "scene_number",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "number",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "description",
+              "displayName": "description",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "script_action",
+              "displayName": "script_action",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "audio_vo",
+              "displayName": "audio_vo",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "assets",
+              "displayName": "assets",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "start_image_prompt",
+              "displayName": "start_image_prompt",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "end_image_prompt",
+              "displayName": "end_image_prompt",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Status",
+              "displayName": "Status",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "options",
+              "options": [
+                {
+                  "name": "Todo",
+                  "value": "Todo"
+                },
+                {
+                  "name": "Toreview",
+                  "value": "Toreview"
+                },
+                {
+                  "name": "Done",
+                  "value": "Done"
+                }
+              ],
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "start_image",
+              "displayName": "start_image",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "array",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "end_image",
+              "displayName": "end_image",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "array",
+              "readOnly": false,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.airtable",
+      "typeVersion": 2.1,
+      "position": [
+        1360,
+        528
+      ],
+      "id": "cd01017c-4683-47fb-b638-f8f5e8e40cf3",
+      "name": "Add Scenes",
+      "credentials": {
+        "airtableTokenApi": {
+          "id": "ZseG7AfA1qcyn9JX",
+          "name": "Airtable Video Generation API Key"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "upsert",
+        "base": {
+          "__rl": true,
+          "value": "app0ttB5I3om40Qhz",
+          "mode": "list",
+          "cachedResultName": "stealing-bones",
+          "cachedResultUrl": "https://airtable.com/app0ttB5I3om40Qhz"
+        },
+        "table": {
+          "__rl": true,
+          "value": "tbl9haZzGQry8j55H",
+          "mode": "list",
+          "cachedResultName": "scenes",
+          "cachedResultUrl": "https://airtable.com/app0ttB5I3om40Qhz/tbl9haZzGQry8j55H"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "id": "={{ $('Airtable - Scenes').item.json.id }}",
+            "end_image": "={{ [{\"url\": \"https://drive.google.com/uc?export=view&id=\" + $('Upload end frame').item.json.id}] }}"
+          },
+          "matchingColumns": [
+            "id"
+          ],
+          "schema": [
+            {
+              "id": "id",
+              "displayName": "id",
+              "required": false,
+              "defaultMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": true,
+              "removed": false
+            },
+            {
+              "id": "project_id",
+              "displayName": "project_id",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "project_name",
+              "displayName": "project_name",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "scene_number",
+              "displayName": "scene_number",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "number",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "description",
+              "displayName": "description",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "script_action",
+              "displayName": "script_action",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "audio_vo",
+              "displayName": "audio_vo",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "assets",
+              "displayName": "assets",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "start_image_prompt",
+              "displayName": "start_image_prompt",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "end_image_prompt",
+              "displayName": "end_image_prompt",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Status",
+              "displayName": "Status",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "options",
+              "options": [
+                {
+                  "name": "Todo",
+                  "value": "Todo"
+                },
+                {
+                  "name": "Toreview",
+                  "value": "Toreview"
+                },
+                {
+                  "name": "Done",
+                  "value": "Done"
+                }
+              ],
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "start_image",
+              "displayName": "start_image",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "array",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "end_image",
+              "displayName": "end_image",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "array",
+              "readOnly": false,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.airtable",
+      "typeVersion": 2.1,
+      "position": [
+        1360,
+        848
+      ],
+      "id": "0dd4871d-fc49-4aa5-9bc0-4c424c546dc8",
+      "name": "Add End Frame",
+      "credentials": {
+        "airtableTokenApi": {
+          "id": "ZseG7AfA1qcyn9JX",
+          "name": "Airtable Video Generation API Key"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "upsert",
+        "base": {
+          "__rl": true,
+          "value": "app0ttB5I3om40Qhz",
+          "mode": "list",
+          "cachedResultName": "stealing-bones",
+          "cachedResultUrl": "https://airtable.com/app0ttB5I3om40Qhz"
+        },
+        "table": {
+          "__rl": true,
+          "value": "tbl9haZzGQry8j55H",
+          "mode": "list",
+          "cachedResultName": "scenes",
+          "cachedResultUrl": "https://airtable.com/app0ttB5I3om40Qhz/tbl9haZzGQry8j55H"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "id": "={{ $('Airtable - Scenes').item.json.id }}",
+            "start_image": "={{ [{\"url\": \"https://drive.google.com/uc?export=view&id=\" + $('Upload start frame').item.json.id}] }}"
+          },
+          "matchingColumns": [
+            "id"
+          ],
+          "schema": [
+            {
+              "id": "id",
+              "displayName": "id",
+              "required": false,
+              "defaultMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": true,
+              "removed": false
+            },
+            {
+              "id": "project_id",
+              "displayName": "project_id",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "project_name",
+              "displayName": "project_name",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "scene_number",
+              "displayName": "scene_number",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "number",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "description",
+              "displayName": "description",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "script_action",
+              "displayName": "script_action",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "audio_vo",
+              "displayName": "audio_vo",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "assets",
+              "displayName": "assets",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "start_image_prompt",
+              "displayName": "start_image_prompt",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "end_image_prompt",
+              "displayName": "end_image_prompt",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Status",
+              "displayName": "Status",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "options",
+              "options": [
+                {
+                  "name": "Todo",
+                  "value": "Todo"
+                },
+                {
+                  "name": "Toreview",
+                  "value": "Toreview"
+                },
+                {
+                  "name": "Done",
+                  "value": "Done"
+                }
+              ],
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "start_image",
+              "displayName": "start_image",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "array",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "end_image",
+              "displayName": "end_image",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "array",
+              "readOnly": false,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.airtable",
+      "typeVersion": 2.1,
+      "position": [
+        1216,
+        848
+      ],
+      "id": "3ad00d74-1dba-4052-bd5d-3495bdf8a825",
+      "name": "Add Start Frame",
+      "credentials": {
+        "airtableTokenApi": {
+          "id": "ZseG7AfA1qcyn9JX",
+          "name": "Airtable Video Generation API Key"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "EXCAVATION": {
+      "main": [
+        [
+          {
+            "node": "Search Project",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Gemini Pro": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Extraction Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Split Out Scenes": {
+      "main": [
+        [
+          {
+            "node": "Update Project",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Search Project": {
+      "main": [
+        [
+          {
+            "node": "Extraction Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extraction Agent": {
+      "main": [
+        [
+          {
+            "node": "Split Out Scenes",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "IMAGES": {
+      "main": [
+        [
+          {
+            "node": "Airtable - Project",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "JSON": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "Extraction Agent",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Analyze video": {
+      "ai_tool": [
+        [
+          {
+            "node": "Extraction Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Upload end frame": {
+      "main": [
+        [
+          {
+            "node": "Add Start Frame",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Upload start frame": {
+      "main": [
+        [
+          {
+            "node": "POST end image",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Create folder",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Search files and folders",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Airtable - Project": {
+      "main": [
+        [
+          {
+            "node": "Airtable - Scenes",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Airtable - Scenes": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create folder": {
+      "main": [
+        [
+          {
+            "node": "Update record",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update record": {
+      "main": [
+        [
+          {
+            "node": "Search files and folders",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Search files and folders": {
+      "main": [
+        [
+          {
+            "node": "POST start image",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "POST end image": {
+      "main": [
+        [
+          {
+            "node": "Upload end frame",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "POST start image": {
+      "main": [
+        [
+          {
+            "node": "Upload start frame",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update Project": {
+      "main": [
+        [
+          {
+            "node": "Add Scenes",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Add Scenes": {
+      "main": [
+        []
+      ]
+    },
+    "Add Start Frame": {
+      "main": [
+        [
+          {
+            "node": "Add End Frame",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Add End Frame": {
+      "main": [
+        []
+      ]
+    }
+  },
+  "pinData": {},
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "ef2144965021bf8c18ae7d09f35c796f1147526d76e423d22edc7aeeb77653a1"
+  }
+}

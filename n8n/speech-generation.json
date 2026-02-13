@@ -1,0 +1,852 @@
+{
+  "nodes": [
+    {
+      "parameters": {
+        "content": "## SPEECH GENERATION",
+        "height": 336,
+        "width": 2240,
+        "color": 6
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -928,
+        736
+      ],
+      "typeVersion": 1,
+      "id": "fcb4b3ed-9db9-4e01-94d1-055536ea7f53",
+      "name": "Sticky Note - Speech"
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {}
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.3,
+      "position": [
+        -736,
+        848
+      ],
+      "id": "16862bbf-ef47-48ed-b537-123f5774f466",
+      "name": "SPEECH FR"
+    },
+    {
+      "parameters": {
+        "operation": "search",
+        "base": {
+          "__rl": true,
+          "value": "app0ttB5I3om40Qhz",
+          "mode": "list",
+          "cachedResultName": "stealing-bones",
+          "cachedResultUrl": "https://airtable.com/app0ttB5I3om40Qhz"
+        },
+        "table": {
+          "__rl": true,
+          "value": "tblUT9FAM9xipRsyb",
+          "mode": "list",
+          "cachedResultName": "project",
+          "cachedResultUrl": "https://airtable.com/app0ttB5I3om40Qhz/tblUT9FAM9xipRsyb"
+        },
+        "filterByFormula": "({status} = 'In progress')",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.airtable",
+      "typeVersion": 2.1,
+      "position": [
+        -480,
+        848
+      ],
+      "id": "48bf29d0-5022-4292-b725-f1ad3b7dd63a",
+      "name": "Airtable - Project",
+      "credentials": {
+        "airtableTokenApi": {
+          "id": "ZseG7AfA1qcyn9JX",
+          "name": "Airtable Video Generation API Key"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "search",
+        "base": {
+          "__rl": true,
+          "value": "app0ttB5I3om40Qhz",
+          "mode": "list",
+          "cachedResultName": "stealing-bones",
+          "cachedResultUrl": "https://airtable.com/app0ttB5I3om40Qhz"
+        },
+        "table": {
+          "__rl": true,
+          "value": "tbl9haZzGQry8j55H",
+          "mode": "list",
+          "cachedResultName": "scenes",
+          "cachedResultUrl": "https://airtable.com/app0ttB5I3om40Qhz/tbl9haZzGQry8j55H"
+        },
+        "filterByFormula": "({status} = 'Toreview')",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.airtable",
+      "typeVersion": 2.1,
+      "position": [
+        -320,
+        848
+      ],
+      "id": "7b04aaf8-ce2c-42eb-b389-ead72239c2f3",
+      "name": "Airtable - Scenes",
+      "credentials": {
+        "airtableTokenApi": {
+          "id": "ZseG7AfA1qcyn9JX",
+          "name": "Airtable Video Generation API Key"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "679a0849-7020-4552-bad3-e4255a8531a6",
+              "leftValue": "={{ $('Airtable - Project').item.json.scenes_folder_created }}",
+              "rightValue": "Not Created",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        -160,
+        848
+      ],
+      "id": "359fe715-44f9-48f1-a46b-eb1eeca7f45c",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "resource": "folder",
+        "name": "={{ $('Airtable - Project').item.json.project_name }}",
+        "driveId": {
+          "__rl": true,
+          "mode": "list",
+          "value": "My Drive"
+        },
+        "folderId": {
+          "__rl": true,
+          "value": "1xVUgCkTu1NDKvkedVTzIyQcefFvXdl2Z",
+          "mode": "list",
+          "cachedResultName": "Scenes Images",
+          "cachedResultUrl": "https://drive.google.com/drive/folders/1xVUgCkTu1NDKvkedVTzIyQcefFvXdl2Z"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        48,
+        752
+      ],
+      "id": "d6460a79-3163-4e9c-9538-c11918dc2c5a",
+      "name": "Create folder",
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "0VXQ0KPxq6lYgsAO",
+          "name": "Navire de l'Est"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "base": {
+          "__rl": true,
+          "value": "app0ttB5I3om40Qhz",
+          "mode": "list",
+          "cachedResultName": "stealing-bones",
+          "cachedResultUrl": "https://airtable.com/app0ttB5I3om40Qhz"
+        },
+        "table": {
+          "__rl": true,
+          "value": "tblUT9FAM9xipRsyb",
+          "mode": "list",
+          "cachedResultName": "project",
+          "cachedResultUrl": "https://airtable.com/app0ttB5I3om40Qhz/tblUT9FAM9xipRsyb"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "id": "={{ $('Airtable - Project').item.json.id }}",
+            "scenes_folder_created": "Created"
+          },
+          "matchingColumns": [
+            "id"
+          ],
+          "schema": [
+            {
+              "id": "id",
+              "displayName": "id",
+              "required": false,
+              "defaultMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": true,
+              "removed": false
+            },
+            {
+              "id": "project_name",
+              "displayName": "project_name",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "yt_short",
+              "displayName": "yt_short",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "status",
+              "displayName": "status",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "options",
+              "options": [
+                {
+                  "name": "Todo",
+                  "value": "Todo"
+                },
+                {
+                  "name": "In progress",
+                  "value": "In progress"
+                },
+                {
+                  "name": "Done",
+                  "value": "Done"
+                },
+                {
+                  "name": "To Review",
+                  "value": "To Review"
+                }
+              ],
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "core_image",
+              "displayName": "core_image",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "array",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "core_elements",
+              "displayName": "core_elements",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "array",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "scenes_folder_created",
+              "displayName": "scenes_folder_created",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "options",
+              "options": [
+                {
+                  "name": "Not Created",
+                  "value": "Not Created"
+                },
+                {
+                  "name": "Created",
+                  "value": "Created"
+                }
+              ],
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "creative_direction",
+              "displayName": "creative_direction",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "script",
+              "displayName": "script",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "voice_id",
+              "displayName": "voice_id",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "music_file",
+              "displayName": "music_file",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "array",
+              "readOnly": false,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.airtable",
+      "typeVersion": 2.1,
+      "position": [
+        192,
+        752
+      ],
+      "id": "55c12e7d-b7a9-4970-99ec-ed306c971673",
+      "name": "Update record",
+      "credentials": {
+        "airtableTokenApi": {
+          "id": "ZseG7AfA1qcyn9JX",
+          "name": "Airtable Video Generation API Key"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "fileFolder",
+        "queryString": "={{ $('Airtable - Project').item.json.project_name }}",
+        "returnAll": true,
+        "filter": {
+          "driveId": {
+            "mode": "list",
+            "value": "My Drive"
+          },
+          "folderId": {
+            "__rl": true,
+            "value": "1xVUgCkTu1NDKvkedVTzIyQcefFvXdl2Z",
+            "mode": "list",
+            "cachedResultName": "Scenes Images",
+            "cachedResultUrl": "https://drive.google.com/drive/folders/1xVUgCkTu1NDKvkedVTzIyQcefFvXdl2Z"
+          }
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        384,
+        864
+      ],
+      "id": "5573bce5-797f-4fbd-8997-b8c1f36296e1",
+      "name": "Search files and folders",
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "0VXQ0KPxq6lYgsAO",
+          "name": "Navire de l'Est"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "9f71657f-e2f6-4f5f-b7a4-c39fb6f85db2",
+              "leftValue": "={{ $('Airtable - Scenes').item.json.voice_fr && $('Airtable - Scenes').item.json.voice_fr.length ? 'present' : '' }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        576,
+        848
+      ],
+      "id": "de8dc100-0c5d-45db-bf0c-1070d69f5c5d",
+      "name": "If Voice Missing"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://naviredelest--image-generator-translate-french.modal.run/",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"text\": \"{{ $('Airtable - Scenes').item.json.audio_vo }}\"\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        752,
+        752
+      ],
+      "id": "d99b6037-ed3a-4d11-a203-cd60fb2cf97a",
+      "name": "POST translate French",
+      "retryOnFail": true,
+      "maxTries": 3,
+      "waitBetweenTries": 5000,
+      "continueOnFail": true,
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "Q0MHV0GVKDSqvcwE",
+          "name": "Modal"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "upsert",
+        "base": {
+          "__rl": true,
+          "value": "app0ttB5I3om40Qhz",
+          "mode": "list",
+          "cachedResultName": "stealing-bones",
+          "cachedResultUrl": "https://airtable.com/app0ttB5I3om40Qhz"
+        },
+        "table": {
+          "__rl": true,
+          "value": "tbl9haZzGQry8j55H",
+          "mode": "list",
+          "cachedResultName": "scenes",
+          "cachedResultUrl": "https://airtable.com/app0ttB5I3om40Qhz/tbl9haZzGQry8j55H"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "id": "={{ $('Airtable - Scenes').item.json.id }}",
+            "script_fr": "={{ $('POST translate French').item.json.script_fr || $('Airtable - Scenes').item.json.audio_vo }}"
+          },
+          "matchingColumns": [
+            "id"
+          ],
+          "schema": [
+            {
+              "id": "id",
+              "displayName": "id",
+              "required": false,
+              "defaultMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": true,
+              "removed": false
+            },
+            {
+              "id": "script_fr",
+              "displayName": "script_fr",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.airtable",
+      "typeVersion": 2.1,
+      "position": [
+        928,
+        752
+      ],
+      "id": "90a86da6-85b9-43f4-b7ca-4f2217f653b6",
+      "name": "Add Script FR",
+      "credentials": {
+        "airtableTokenApi": {
+          "id": "ZseG7AfA1qcyn9JX",
+          "name": "Airtable Video Generation API Key"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://naviredelest--image-generator-generate-french-voice.modal.run/",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"text\": \"{{ $('Add Script FR').item.json.script_fr }}\"\n}",
+        "options": {
+          "response": {
+            "response": {
+              "responseFormat": "file"
+            }
+          }
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        1104,
+        752
+      ],
+      "id": "ecb9d37f-56e5-479c-9410-b6f2789696cc",
+      "name": "POST French voice",
+      "retryOnFail": true,
+      "maxTries": 3,
+      "waitBetweenTries": 5000,
+      "continueOnFail": true,
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "Q0MHV0GVKDSqvcwE",
+          "name": "Modal"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "inputDataFieldName": "={{ $('POST French voice').item.binary.data }}",
+        "name": "={{ $('Airtable - Scenes').item.json.project_name + \" - Scene \" + $('Airtable - Scenes').item.json.scene_number + \" - Voice FR - \" + $now.toFormat('yyyy-MM-dd_HH-mm-ss') + \".mp3\" }}",
+        "driveId": {
+          "__rl": true,
+          "mode": "list",
+          "value": "My Drive"
+        },
+        "folderId": {
+          "__rl": true,
+          "value": "={{ $('Search files and folders').item.json.id }}",
+          "mode": "id"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        1280,
+        752
+      ],
+      "id": "09d1d137-b785-44f4-b4bf-01be264c3ec6",
+      "name": "Upload French voice",
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "0VXQ0KPxq6lYgsAO",
+          "name": "Navire de l'Est"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "upsert",
+        "base": {
+          "__rl": true,
+          "value": "app0ttB5I3om40Qhz",
+          "mode": "list",
+          "cachedResultName": "stealing-bones",
+          "cachedResultUrl": "https://airtable.com/app0ttB5I3om40Qhz"
+        },
+        "table": {
+          "__rl": true,
+          "value": "tbl9haZzGQry8j55H",
+          "mode": "list",
+          "cachedResultName": "scenes",
+          "cachedResultUrl": "https://airtable.com/app0ttB5I3om40Qhz/tbl9haZzGQry8j55H"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "id": "={{ $('Airtable - Scenes').item.json.id }}",
+            "voice_fr": "={{ [{\"url\": \"https://drive.google.com/uc?export=view&id=\" + $('Upload French voice').item.json.id}] }}",
+            "Status": "Done"
+          },
+          "matchingColumns": [
+            "id"
+          ],
+          "schema": [
+            {
+              "id": "id",
+              "displayName": "id",
+              "required": false,
+              "defaultMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": true,
+              "removed": false
+            },
+            {
+              "id": "voice_fr",
+              "displayName": "voice_fr",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "array",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Status",
+              "displayName": "Status",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "options",
+              "options": [
+                {
+                  "name": "Todo",
+                  "value": "Todo"
+                },
+                {
+                  "name": "Toreview",
+                  "value": "Toreview"
+                },
+                {
+                  "name": "Done",
+                  "value": "Done"
+                }
+              ],
+              "readOnly": false,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.airtable",
+      "typeVersion": 2.1,
+      "position": [
+        1456,
+        752
+      ],
+      "id": "115d2aad-c081-414c-838d-9d2fcb4bde44",
+      "name": "Add Voice FR",
+      "credentials": {
+        "airtableTokenApi": {
+          "id": "ZseG7AfA1qcyn9JX",
+          "name": "Airtable Video Generation API Key"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "SPEECH FR": {
+      "main": [
+        [
+          {
+            "node": "Airtable - Project",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Airtable - Project": {
+      "main": [
+        [
+          {
+            "node": "Airtable - Scenes",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Airtable - Scenes": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Create folder",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Search files and folders",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create folder": {
+      "main": [
+        [
+          {
+            "node": "Update record",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update record": {
+      "main": [
+        [
+          {
+            "node": "Search files and folders",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Search files and folders": {
+      "main": [
+        [
+          {
+            "node": "If Voice Missing",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If Voice Missing": {
+      "main": [
+        [
+          {
+            "node": "POST translate French",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        []
+      ]
+    },
+    "POST translate French": {
+      "main": [
+        [
+          {
+            "node": "Add Script FR",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Add Script FR": {
+      "main": [
+        [
+          {
+            "node": "POST French voice",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "POST French voice": {
+      "main": [
+        [
+          {
+            "node": "Upload French voice",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Upload French voice": {
+      "main": [
+        [
+          {
+            "node": "Add Voice FR",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Add Voice FR": {
+      "main": [
+        []
+      ]
+    }
+  },
+  "pinData": {},
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "ef2144965021bf8c18ae7d09f35c796f1147526d76e423d22edc7aeeb77653a1"
+  }
+}
