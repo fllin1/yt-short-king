@@ -1,0 +1,13 @@
+---
+description: Fail-fast error handling policy for Python code
+globs: src/**/*.py
+alwaysApply: false
+---
+
+# Python Error Handling Policy
+
+- Prefer fail-fast behavior by default; avoid broad `try/except` blocks.
+- Only catch exceptions at clear boundaries (CLI UX, external I/O, network calls, or input parsing).
+- Never use empty `except` blocks and never swallow errors silently.
+- If an exception is caught, add context and re-raise unless there is a clear recovery path.
+- Do not use exceptions for normal control flow.

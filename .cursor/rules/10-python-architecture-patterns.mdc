@@ -1,0 +1,13 @@
+---
+description: Python architecture patterns for pipeline modules
+globs: src/**/*.py
+alwaysApply: false
+---
+
+# Python Architecture Patterns
+
+- For each pipeline module, define a contract with `abc.ABC` and `@abstractmethod`.
+- Use the Strategy Pattern for interchangeable implementations of the same behavior.
+- Use Factory Method to construct or select the concrete strategy based on runtime config.
+- Keep CLI commands separate from domain logic; commands trigger orchestration only.
+- Favor dependency injection and pure inputs/outputs to keep strategies testable.

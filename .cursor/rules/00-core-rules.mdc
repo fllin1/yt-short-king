@@ -1,0 +1,12 @@
+---
+description: Core standards for this Python project template
+alwaysApply: true
+---
+
+# Core Rules
+
+- Prioritize convention, clarity, and reproducibility over one-off shortcuts.
+- Keep implementation code under `src/${package_name}/` and keep command-line entrypoints thin and orchestration-focused.
+- Prefer explicit, readable, and deterministic code paths over implicit behavior.
+- Keep changes minimal and scoped; avoid broad refactors unless explicitly requested.
+- Preserve data and generated assets by default; avoid destructive operations unless explicitly requested and scoped.

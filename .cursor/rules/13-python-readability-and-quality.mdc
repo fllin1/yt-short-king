@@ -1,0 +1,13 @@
+---
+description: Readability-first Python quality standards
+globs: src/**/*.py
+alwaysApply: false
+---
+
+# Readability and Quality
+
+- Prioritize readable code over clever or compressed constructs.
+- Use descriptive names, small focused functions, and straightforward control flow.
+- Add type hints for public functions and module interfaces.
+- Add concise docstrings when behavior is non-obvious.
+- Prefer composition and clear module boundaries over tightly coupled code.

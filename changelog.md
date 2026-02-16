@@ -1,5 +1,18 @@
 # Changelog
 
+## 2026-02-16
+
+- Implemented `video_cuts_detect` module with scenedetect strategy
+- Added RAW_DIR to config
+- Scene detection via ContentDetector, splitting via split_video_ffmpeg
+- Optional cuts_timestamps.json export when verbose
+- `detect_and_split` accepts full path or filename; optional `output_path` for custom save location
+- Added `cuts` CLI command in main.py with `path`, `-o/--output`, `-v/--verbose` options
+- Typer app uses `no_args_is_help=True` so running `ytsk` without a command shows help
+- Switched scene detection to PyAV backend to fix AV1 decoding errors (OpenCV lacks AV1 support on some platforms)
+- Video download: sanitize title (spaces→underscores, remove special chars) via `sanitize_title()` in utils
+- Cuts: output dir and filenames use sanitized title to avoid path/encoding issues; scenes named `scene_1.mp4`, `scene_2.mp4`, etc.
+
 ## 2026-02-13
 
 - Added new Modal endpoints in `modal/image_generator.py`:

@@ -1,0 +1,13 @@
+---
+description: Configuration and path management conventions
+globs: src/**/*.py
+alwaysApply: false
+---
+
+# Config and Paths
+
+- Keep project-wide constants and canonical paths in `src/${package_name}/config.py`.
+- Use `pathlib.Path` exclusively for path composition, traversal, and normalization.
+- Build paths relative to a deterministic project root constant.
+- Keep environment-specific values isolated from code defaults.
+- Avoid scattering hard-coded paths across modules.

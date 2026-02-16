@@ -1,5 +1,5 @@
 [project]
-name = "short-success"
+name = "yt-short-king"
 version = "0.1.0"
 description = "Add your description here"
 readme = "README.md"
@@ -9,4 +9,19 @@ dependencies = [
     "google-genai>=1.62.0",
     "modal>=1.3.2",
     "pandas>=3.0.0",
+    "av>=14.0.0",
+    "scenedetect[opencv]>=0.6.7.1",
+    "typer>=0.23.1",
+    "yt-dlp>=2026.2.4",
+    "dvc>=3.66.1",
 ]
+
+[build-system]
+requires = ["setuptools", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project.scripts]
+ytsk = "ytsk.main:app"
+
+[tool.setuptools.packages.find]
+where = ["src"]
