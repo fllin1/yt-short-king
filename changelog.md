@@ -1,5 +1,25 @@
 # Changelog
 
+## 2026-02-23
+
+- StorageFactory.create(path, schema) takes path and schema directly; schema keys: table, id_column, columns; ShortVideoRepository.from_path(path)
+- Added openpyxl dependency for XLSX support in FileStrategy
+- `audio_speech_to_text`: default save to same folder as audio, named transcript.json (or .txt when no metadata); includes text + chunks when available
+- `audio_speech_to_text`: respect `HF_HUB_OFFLINE=1` or `TRANSFORMERS_OFFLINE=1` to load from cache only (no Hub requests)
+- Fixed `audio_speech_to_text` for long-form audio (>30s): always pass `return_timestamps=True` to the pipeline (required by Whisper), then extract text when user did not request timestamps
+- Refactored `audio_speech_to_text` to ABC + Factory pattern (Transcriber, WhisperTranscriberImpl, TranscriberFactory)
+- Reorganized CLI into `ytsk video` and `ytsk audio` subcommands (download, cuts, get-audio under video; transcribe under audio)
+- Added top-level docstring in main.py with usage examples and help instructions
+- Implemented `audio_speech_to_text` module using Whisper large-v3-turbo (openai/whisper-large-v3-turbo)
+- Lazy-loaded transformers pipeline; supports transcribe/translate, optional language, timestamps
+- Path resolution mirrors video modules: full path or filename against EXTERNAL_DIR
+- Added `transcribe` CLI command with `path`, `-o/--output`, `-l/--language`, `-t/--task`, `--timestamps`
+- Dependencies: torch, transformers, accelerate
+- Implemented `video_get_audio` module to extract audio from downloaded videos
+- Uses ffmpeg via subprocess (MP3 via libmp3lame, M4A via copy or aac fallback)
+- Path resolution mirrors `video_cuts_detect`: full path or filename against EXTERNAL_DIR
+- Added `get-audio` CLI command with `path`, `-o/--output`, `-f/--format` (mp3|m4a), `-v/--verbose`
+
 ## 2026-02-16
 
 - Implemented `video_cuts_detect` module with scenedetect strategy
