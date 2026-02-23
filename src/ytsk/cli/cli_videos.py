@@ -1,5 +1,4 @@
-from ytsk.videos.video_cuts_detect import CutsDetectorFactory
-from ytsk.videos.video_download import DownloaderFactory
+from ytsk.editing import CutsDetectorFactory, DownloaderFactory, extract_audio
 
 
 def download_command(url: str, source: str = "youtube", verbose: bool = False):
@@ -19,3 +18,14 @@ def cuts_command(
     detector = CutsDetectorFactory.create("scenedetect")
     output_dir = detector.detect_and_split(path, output_path=output, verbose=verbose)
     print(f"Saved {output_dir}")
+
+
+def get_audio_command(
+    path: str,
+    output: str | None = None,
+    format: str = "mp3",
+    verbose: bool = False,
+):
+    """Extract audio from a video file."""
+    out_path = extract_audio(path, output_path=output, format=format, verbose=verbose)
+    print(f"Saved {out_path}")

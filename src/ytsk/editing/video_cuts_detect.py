@@ -63,7 +63,9 @@ class SceneDetectStrategy(CutsDetector):
         video_title = video_path.stem
         safe_title = sanitize_title(video_title)
         output_dir = (
-            Path(output_path).resolve() if output_path else RAW_DIR / safe_title
+            Path(output_path).resolve()
+            if output_path
+            else RAW_DIR / safe_title / "scenes"
         )
         output_dir.mkdir(parents=True, exist_ok=True)
 
